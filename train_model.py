@@ -18,8 +18,8 @@ def get_image_dir(image_type):
     return os.path.normpath(image_dir)
 
 
-def get_image_dir_for_class(image_class):
-    class_dir = os.path.join(get_image_dir(),image_class)
+def get_image_dir_for_class(image_class,image_type):
+    class_dir = os.path.join(get_image_dir(image_type),image_class)
     return os.path.normpath(class_dir)
 
 
@@ -94,5 +94,5 @@ model.fit_generator(
 
 model_dir = get_model_dir()
 os.makedirs(model_dir,exist_ok=True)
-model_file = os.path.join(model_dir,'trained_model.h5')
+model_file = os.path.join(model_dir,'trained_model_v2.h5')
 model.save(model_file)

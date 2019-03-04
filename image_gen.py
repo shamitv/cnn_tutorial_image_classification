@@ -90,7 +90,7 @@ generators = {
 
 
 image_size = (500,500)
-num_images = 10000
+num_images = 1000
 num_validation_images =  int(num_images * 0.05)
 
 
