@@ -56,17 +56,27 @@ def generate_line(image_size):
     return img
 
 
+def generate_triangle(image_size):
+    img, draw = generate_blank_image(image_size)
+    draw.polygon(list(np.random.choice(range(image_size[0]), size=6)),
+                 fill=get_random_color(), outline=get_random_color())
+    return img
+
+
 def get_dir_for_class(image_class):
     script_dir = os.path.dirname(os.path.realpath(__file__))
     class_dir = os.path.join(script_dir,'data','images',image_class)
     return os.path.normpath(class_dir)
 
 
+
 generators = {
     'line' : generate_line,
-    'circle' : generate_circle,
-    'rectangle' : generate_rectangle
+    'triangle' : generate_triangle,
+    'rectangle' : generate_rectangle,
+    'circle' : generate_circle
 }
+
 
 image_size = (500,500)
 num_images = 10000

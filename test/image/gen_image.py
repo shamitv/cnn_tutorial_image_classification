@@ -41,6 +41,9 @@ draw.rectangle(get_bbox_random_rectangle(image_size), fill=get_random_color(), o
 
 draw.ellipse(list(get_bbox_random_square(image_size)), fill = get_random_color(), outline =get_random_color())
 
+draw.polygon(list(np.random.choice(range(image_size[0]), size=6)),
+             fill = get_random_color(), outline =get_random_color())
+
 #draw.ellipse([(20,50),(40,70)], fill = get_random_color(), outline =get_random_color())
 
 img.show()
