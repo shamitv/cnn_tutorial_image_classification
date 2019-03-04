@@ -12,9 +12,9 @@ def get_model_dir():
     return os.path.normpath(model_dir)
 
 
-def get_image_dir():
+def get_image_dir(image_type):
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    image_dir = os.path.join(script_dir,'data','images')
+    image_dir = os.path.join(script_dir,'data','images',image_type)
     return os.path.normpath(image_dir)
 
 
@@ -53,7 +53,7 @@ def define_model(image_dim,num_channels,num_classes):
 
 
 def get_data_generators(image_dim,batch_size):
-    image_dir=get_image_dir()
+    image_dir=get_image_dir('train')
     data_generator = ImageDataGenerator(validation_split=0.2)
     train_generator = data_generator.flow_from_directory(image_dir, target_size=(image_dim, image_dim),
                                                          shuffle=True, seed=13,

@@ -63,12 +63,21 @@ def generate_triangle(image_size):
     return img
 
 
-def get_dir_for_class(image_class):
+def get_dir_for_class(image_class,img_type):
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    class_dir = os.path.join(script_dir,'data','images',image_class)
+    class_dir = os.path.join(script_dir,'data','images',img_type,image_class)
     return os.path.normpath(class_dir)
 
 
+def generate_images(img_class,generator,img_type,num_images):
+    image_dir = get_dir_for_class(img_class,img_type)
+    print('\tSaving at ' + image_dir)
+    os.makedirs(image_dir, exist_ok=True)
+    for image_num in range(1,num_images+1):
+        img=generator(image_size)
+        image_filename=str(img_class) + '_' + str(image_num) + '.png'
+        image_path=os.path.join(image_dir,image_filename)
+        img.save(image_path)
 
 generators = {
     'line' : generate_line,
@@ -78,18 +87,16 @@ generators = {
 }
 
 
+
+
 image_size = (500,500)
 num_images = 10000
+num_validation_images =  int(num_images * 0.05)
+
 
 for image_class in generators:
     print('Generating for '+image_class)
     image_gen_function=generators[image_class]
-    image_dir=get_dir_for_class(image_class)
-    print('\tSaving at ' + image_dir)
-    os.makedirs(image_dir, exist_ok=True)
-    for image_num in range(1,num_images+1):
-        img=image_gen_function(image_size)
-        image_filename=str(image_class) + '_' + str(image_num) + '.png'
-        image_path=os.path.join(image_dir,image_filename)
-        img.save(image_path)
+    generate_images(image_class,image_gen_function,'train',num_images)
+    generate_images(image_class, image_gen_function, 'validate', num_validation_images)
 
