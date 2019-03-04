@@ -31,6 +31,7 @@ def define_model(image_dim,num_channels,num_classes):
     model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(BatchNormalization())
+    '''
     model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(BatchNormalization())
@@ -40,6 +41,7 @@ def define_model(image_dim,num_channels,num_classes):
     model.add(Conv2D(32, kernel_size=(3, 3), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(BatchNormalization())
+    '''
     model.add(Dropout(0.2))
     model.add(Flatten())
     model.add(Dense(128, activation='relu'))
@@ -87,10 +89,12 @@ model.summary()
 
 model.fit_generator(
         train_generator,
+        steps_per_epoch=num_train_images/batch_size,
         epochs=5,
+        validation_steps=num_test_images/batch_size,
         validation_data=validation_generator)
 
 model_dir = get_model_dir()
 os.makedirs(model_dir,exist_ok=True)
 model_file = os.path.join(model_dir,'trained_model.h5')
-model.save()
+model.save(model_file)
