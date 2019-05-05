@@ -4,7 +4,7 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers. normalization import BatchNormalization
 from keras.preprocessing.image import ImageDataGenerator
-
+from keras.callbacks  import ModelCheckpoint
 
 def get_model_dir():
     script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -85,14 +85,21 @@ model = define_model(image_dim,num_channels,train_generator.num_classes)
 
 model.summary()
 
+model_dir = get_model_dir()
+os.makedirs(model_dir,exist_ok=True)
+model_file = os.path.join(model_dir,'trained_model_v3_epoch_{epoch:02d}-acc_{val_acc:.2f}.h5')
+
+model_checkpoint = ModelCheckpoint(filepath=model_file,monitor='val_acc',
+                                   verbose=1, save_best_only=True, mode='max')
+
 model.fit_generator(
         train_generator,
         steps_per_epoch=num_train_images/batch_size,
-        epochs=5,
+        epochs=50,
+        verbose=2,
         validation_steps=num_test_images/batch_size,
-        validation_data=validation_generator)
+        validation_data=validation_generator,
+        callbacks=[model_checkpoint])
 
-model_dir = get_model_dir()
-os.makedirs(model_dir,exist_ok=True)
-model_file = os.path.join(model_dir,'trained_model_v2.h5')
-model.save(model_file)
+
+
